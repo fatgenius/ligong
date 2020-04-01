@@ -1,0 +1,67 @@
+<launch>
+    <!--雷达模块-->
+    <include file="$(find ls01b_v2)/launch/ls01b_v2.launch">
+        <arg name="scan_topic_" value="scan"/>
+        <arg name="frame_id_" value="laser"/>
+        <arg name="serial_port_" value="/dev/ttyUSB1"/>
+    </include>
+
+    <!-- 键盘控制-->
+    <node pkg="wheel" type="robot_keyboard_teleop.py" name="" launch-prefix="xterm -e">
+        <remap from="/cmd_vel_mux/input/teleop" to="/cmd_vel"/>
+    </node>
+
+    <!--小车模型-->
+    <include file="$(find model)/launch/model.launch"/>
+
+    <!--轮子模块-->
+    <node pkg="wheel" type="wheel" name="" launch-prefix="xterm -e">
+        <param name="Serial" value="/dev/ttyUSB0"/>
+        <param name="Baud" value="230400.0"/>
+        <remap from="cmd_vel_mux/output/cmd_vel" to="cmd_vel"/>
+    </node>
+
+    <node pkg="realsense2_beta" type="t265_node" name=""/>
+
+    <!--ekf-->
+    <include file="$(find navigation_demo)/launch/robot_pose_ekf.launch">
+        <arg name="output_frame_id" value="odom"/>
+    </include>
+
+
+    <!--gmapping-->
+    <node pkg="gmapping" type="slam_gmapping" name="" output="screen">
+        <!--<remap from="scan" to="scan"/>-->
+        <!--<param name="map_update_interval" value="/0.5"/>-->
+        <!--<param name="maxUrange" value="16.0"/>-->
+        <!--<param name="sigma" value="0.05"/>-->
+        <!--<param name="kernelSize" value="1"/>-->
+        <!--<param name="lstep" value="0.05"/>-->
+        <!--<param name="astep" value="0.05"/>-->
+        <!--<param name="iterations" value="5"/>-->
+        <!--<param name="lsigma" value="0.075"/>-->
+        <!--<param name="ogain" value="3.0"/>-->
+        <!--<param name="lskip" value="0"/>-->
+        <!--<param name="srr" value="0.1"/>-->
+        <!--<param name="srt" value="0.2"/>-->
+        <!--<param name="str" value="0.1"/>-->
+        <!--<param name="stt" value="0.2"/>-->
+        <!--<param name="linearUpdate" value="1.0"/>-->
+        <!--<param name="angularUpdate" value="0.5"/>-->
+        <!--<param name="temporalUpdate" value="3.0"/>-->
+        <!--<param name="resampleThreshold" value="0.5"/>-->
+        <!--<param name="particles" value="30"/>-->
+        <!--<param name="xmin" value="-50.0"/>-->
+        <!--<param name="ymin" value="-50.0"/>-->
+        <!--<param name="xmax" value="50.0"/>-->
+        <!--<param name="ymax" value="50.0"/>-->
+        <!--<param name="delta" value="0.05"/>-->
+        <!--<param name="llsamplerange" value="0.01"/>-->
+        <!--<param name="llsamplestep" value="0.01"/>-->
+        <!--<param name="lasamplerange" value="0.005"/>-->
+        <!--<param name="lasamplestep" value="0.005"/>-->
+    </node>
+
+    <!--rviz 配置-->
+    <node pkg="rviz" type="rviz" name="" output="screen" args="-d $(find mapping)/rviz/mapping.rviz"/>
+</launch>

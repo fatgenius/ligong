@@ -1,0 +1,4 @@
+<launch>
+    <node name="rp_goal" pkg="topic_demo" type="rp_goal" launch-prefix="xterm -e">
+    </node>
+</launch>

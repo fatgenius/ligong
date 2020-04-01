@@ -1,0 +1,37 @@
+<launch>
+
+    <!--雷达模块-->
+    <include file="$(find ls01b_v2)/launch/ls01b_v2.launch"/>
+
+    <!--轮子模块-->
+    <node pkg="wheel" type="wheel" name="" launch-prefix="xterm -e">
+        <remap from="cmd_vel_mux/output/cmd_vel" to="cmd_vel"/>
+    </node>
+
+    <!--小车模型-->
+    <include file="$(find model)/launch/model.launch"/>
+
+    <!--全局地图发布-->
+    <arg name="map_file" default="$(find mapping)/map/map.yaml"/>
+    <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)"/>
+
+    <!--amcl 局部定位 -->
+    <arg name="initial_pose_x" default="0.0"/>
+    <arg name="initial_pose_y" default="0.0"/>
+    <arg name="initial_pose_a" default="0.0"/>
+    <arg name="custom_amcl_launch_file" default="$(find navigation)/launch/include/amcl.launch.xml"/>
+
+    <include file="$(arg custom_amcl_launch_file)">
+        <arg name="initial_pose_x" value="$(arg initial_pose_x)"/>
+        <arg name="initial_pose_y" value="$(arg initial_pose_y)"/>
+        <arg name="initial_pose_a" value="$(arg initial_pose_a)"/>
+    </include>
+
+
+    <!-- Move base -->
+    <include file="$(find navigation)/launch/include/simple_move_base.launch.xml"/>
+
+    <!--rviz 配置-->
+    <node pkg="rviz" type="rviz" name="" output="screen" args="-d $(find navigation)/rviz/navigation.rviz"/>
+
+</launch>

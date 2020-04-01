@@ -1,0 +1,27 @@
+<launch>
+  <arg name="output_frame_id" default="odom_combined"/>
+  <arg name="odom_id" default="/odom"/>
+  <arg name="vo_id" default="/vo_odom"/>
+  <arg name="imu_id" default="/t265_imu"/>
+  
+  <node pkg="robot_pose_ekf" type="robot_pose_ekf" name="robot_pose_ekf">
+    <param name="output_frame" value="$(arg output_frame_id)"/>
+
+    <param name="base_footprint_frame" value="base_footprint"/>
+    <param name="freq" value="50.0"/>
+    <param name="sensor_timeout" value="3.0"/>  
+    <param name="odom_used" value="true"/>
+    <param name="imu_used" value="false"/>
+    <param name="vo_used" value="false"/>
+    <param name="gps_used" value="false"/>
+
+    <param name="debug" value="false"/>
+
+    <remap from="vo" to="$(arg vo_id)" />
+    <remap from="imu_data" to="$(arg imu_id)" />  
+    <!--<remap from="odom" to="wheel_odom" />-->
+    <!--<remap from="ekf/odom_combined" to="odom" />-->
+  </node>
+
+</launch>
+

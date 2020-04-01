@@ -1,0 +1,4 @@
+<launch>
+    <!--地图保存-->
+    <node name="" pkg="map_server" type="map_saver" output="screen" args="-f $(find mapping)/map/map"/>
+</launch>

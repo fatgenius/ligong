@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot name="smartcar">
+
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="-0.00198084643982857 0.00015826773785399 0.078851316826229"
+        rpy="0 0 0" />
+      <mass
+        value="46.9711436651479" />
+      <inertia
+        ixx="1.18547340787561"
+        ixy="0.000131453718622928"
+        ixz="4.85190687839816E-05"
+        iyy="2.91447990414594"
+        iyz="3.8288691180146E-05"
+        izz="3.73301637110915" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://smartcar/meshes/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://smartcar/meshes/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+
+
+  <link
+    name="wheel1_Link">
+    <inertial>
+      <origin
+        xyz="-1.38777878078145E-17 -0.0462274626386197 -4.5102810375397E-17"
+        rpy="0 0 0" />
+      <mass
+        value="6.82235295606778" />
+      <inertia
+        ixx="0.0195119477019701"
+        ixy="6.24990513525111E-19"
+        ixz="1.51278885993462E-18"
+        iyy="0.0312527402731754"
+        iyz="1.0680647887762E-17"
+        izz="0.0195132559794298" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://smartcar/meshes/wheel1_Link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://smartcar/meshes/wheel1_Link.STL" />
+      </geometry>
+    </collision>
+  </link>
+
+  <joint
+    name="wheel1_joint"
+    type="revolute">
+    <origin
+      xyz="0 0.328 -0.0905"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="wheel1_Link" />
+    <axis
+      xyz="0 -1 0" />
+    <limit
+      lower="-180"
+      upper="180"
+      effort="0"
+      velocity="0" />
+  </joint>
+
+
+  <link
+    name="wheel2_Link">
+    <inertial>
+      <origin
+        xyz="0 0.0462274626386194 4.16333634234434E-17"
+        rpy="0 0 0" />
+      <mass
+        value="6.82235295606777" />
+      <inertia
+        ixx="0.0195119477019701"
+        ixy="3.44675556625482E-19"
+        ixz="-5.37035749066533E-19"
+        iyy="0.0312527402731754"
+        iyz="9.94686708248665E-18"
+        izz="0.0195132559794298" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://smartcar/meshes/wheel2_Link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://smartcar/meshes/wheel2_Link.STL" />
+      </geometry>
+    </collision>
+  </link>
+
+  <joint
+    name="wheel2_joint"
+    type="revolute">
+    <origin
+      xyz="0 -0.328 -0.0905"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="wheel2_Link" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      lower="-180"
+      upper="180"
+      effort="0"
+      velocity="0" />
+  </joint>
+
+
+  <link
+    name="sensor_Link">
+    <inertial>
+      <origin
+        xyz="-0.000311067834290135 -4.89587259622226E-10 -0.0195148289778006"
+        rpy="0 0 0" />
+      <mass
+        value="0.165781066551279" />
+      <inertia
+        ixx="7.6221382324382E-05"
+        ixy="-2.54226544916948E-12"
+        ixz="7.39630811381632E-07"
+        iyy="7.88365405900698E-05"
+        iyz="8.44395884999134E-13"
+        izz="0.000110620480854254" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://smartcar/meshes/sensor_Link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://smartcar/meshes/sensor_Link.STL" />
+      </geometry>
+    </collision>
+  </link>
+
+  <joint
+    name="sensor_joint"
+    type="fixed">
+    <origin
+      xyz="0.4965 0 -0.0125"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="sensor_Link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+</robot>

@@ -1,0 +1,12 @@
+<launch>
+    <node pkg="realsense2_beta" type="t265_node" name= "" launch-prefix="xterm -e"/>
+
+    <node pkg="robot_localization" type="ekf_localization_node" name="ekf_se" clear_params="true">
+        <rosparam command="load" file="$(find robot_localization)/params/ekf_template.yaml" />
+    </node>
+
+    <!--<include file="$(find model)/launch/model.launch"/>-->
+    
+    <!--<include file="$(find zed_wrapper)/launch/zed_no_tf.launch"/>-->
+    <!--<node pkg="rviz" type="rviz" name=""/>-->
+</launch>

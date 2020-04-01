@@ -1,0 +1,164 @@
+<?xml version="1.0"?>
+<robot name="amr" xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:include filename="$(find model)/urdf/materials.xacro" />
+  <xacro:include filename="$(find model)/urdf/macros.xacro" />
+
+  <xacro:property name="PI" value="3.1415926535897931"/>
+
+  <xacro:property name="chassisHeight" value="0.340"/>
+  <xacro:property name="chassisLength" value="1.149"/>
+  <xacro:property name="chassisWidth" value="0.724"/>
+
+  <xacro:property name="odom_x" value="0.0"/>
+  <xacro:property name="odom_y" value="0.0"/>
+  <xacro:property name="odom_z" value="${chassisHeight/2 + wheelRadius}"/>
+  
+  <xacro:property name="odom_name" value="odom"/>
+  <!--<xacro:property name="odom_name" value="odom_combined"/>-->
+
+  <xacro:property name="wheelWidth" value="0.06"/>
+  <xacro:property name="wheelRadius" value="0.065"/>
+  <xacro:property name="wheelPos" value="0.565"/>
+
+  <xacro:property name="LaserHeight" value="0.04"/>
+  <xacro:property name="LaserRadius" value="0.038"/>
+  <xacro:property name="Laser1_x" value="0.50664"/>
+  <!--<xacro:property name="Laser1_x" value="0"/>-->
+  <xacro:property name="Laser1_y" value="-0.29014"/>
+  <xacro:property name="Laser1_z" value="0.05"/>
+
+  <xacro:property name="Laser2_x" value="-0.50664"/>
+  <xacro:property name="Laser2_y" value="0.29014"/>
+  <xacro:property name="Laser2_z" value="0.05"/>
+
+  <xacro:property name="Laser3_x" value="-0.5065"/>
+  <xacro:property name="Laser3_y" value="0.18"/>
+  <xacro:property name="Laser3_z" value="0.05"/>
+
+  <link name='base_link'>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="${chassisLength} ${chassisWidth} ${chassisHeight}"/>
+      </geometry>
+      <material name="orange"/>
+    </visual>
+  </link>
+
+
+  <link name="base_footprint"/>
+  <joint name="base_footprint_to_base" type="fixed">
+    <axis rpy="0 0 0" xyz="0 0 0"/>
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+  </joint>
+
+
+  <!--<link name="${odom_name}"/>
+  <joint name="base_joint" type="fixed">
+    <parent link="${odom_name}"/>
+    <child link="base_footprint"/>
+    <origin xyz="${odom_x} ${odom_y} ${odom_z}" rpy="0 0 0" />
+    <axis xyz="0 1 0" rpy="0 0 0" />
+  </joint>-->
+
+
+  <link name="left_wheel">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 ${PI/2} ${PI/2}" />
+      <geometry>
+        <cylinder length="${wheelWidth}" radius="${wheelRadius}"/>
+      </geometry>
+      <material name="white"/>
+    </visual>
+  </link>
+
+  <joint name="left_wheel_hinge" type="continuous">
+    <parent link="base_link"/>
+    <child link="left_wheel"/>
+    <origin xyz="0 ${wheelPos/2} ${-(chassisHeight/2+wheelRadius)}" rpy="0 0 0" />
+    <axis xyz="0 1 0" rpy="0 0 0" />
+  </joint>
+  
+
+  <link name="right_wheel">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 ${PI/2} ${PI/2}" />
+      <geometry>
+        <cylinder length="${wheelWidth}" radius="${wheelRadius}"/>
+      </geometry>
+      <material name="white"/>
+    </visual>
+  </link>
+
+  <joint name="right_wheel_hinge" type="continuous">
+    <parent link="base_link"/>
+    <child link="right_wheel"/>
+    <origin xyz="0 ${-wheelPos/2} ${-(chassisHeight/2+wheelRadius)}" rpy="0 0 0" />
+    <axis xyz="0 1 0" rpy="0 0 0" />
+  </joint>
+
+
+  <link name="laser">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <cylinder length="${LaserHeight}" radius="${LaserRadius}"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+  </link>
+
+  <joint name="laser_hinge" type="continuous">
+    <parent link="base_link"/>
+    <child link="laser"/>
+    <origin xyz="${Laser1_x} ${Laser1_y} ${Laser1_z}" rpy="${PI} 0 0" />
+    <axis xyz="0 0 1" rpy="0 0 0" />
+  </joint>
+
+
+  <link name="laser2">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <cylinder length="${LaserHeight}" radius="${LaserRadius}"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+  </link>
+
+  <joint name="laser2_hinge" type="continuous">
+    <parent link="base_link"/>
+    <child link="laser2"/>
+    <origin xyz="${Laser2_x} ${Laser2_y} ${Laser2_z}" rpy="${PI} 0 3.1415926" />
+    <axis xyz="0 0 1" rpy="0 0 0" />
+  </joint>
+
+
+  <link name="laser3">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <cylinder length="${LaserHeight}" radius="${LaserRadius}"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+  </link>
+
+  <joint name="laser3_hinge" type="continuous">
+    <parent link="base_link"/>
+    <child link="laser3"/>
+    <origin xyz="${Laser3_x} ${Laser3_y} ${Laser3_z}" rpy="0 0 3.1415926" />
+    <axis xyz="0 0 1" rpy="0 0 0" />  
+  </joint>
+
+  <link name="t265_imu"/>
+  <joint name="265_imu_hinge" type="fixed">
+    <parent link="base_link"/>
+    <child link="t265_imu"/>
+    <origin xyz="0.4965 0 -0.0125" rpy="0 0 0" />
+    <axis xyz="0 0 1" rpy="0 0 0" />
+  </joint>
+
+</robot>

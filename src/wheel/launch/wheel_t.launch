@@ -1,0 +1,9 @@
+<launch>
+    <node pkg="wheel" type="wheel" name="" launch-prefix="xterm -e">
+        <param name="Serial" value="/dev/ttyUSB0"/>
+        <param name="Baud" value="230400.0"/>
+        <!--<param name="TF_parent_id" value="$(arg odom_id)"/>-->
+        <param name="TF_child_id" value="base_footprint"/>
+        <remap from="cmd_vel_mux/output/cmd_vel" to="cmd_vel"/>
+    </node>
+</launch>

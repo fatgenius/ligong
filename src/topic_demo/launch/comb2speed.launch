@@ -1,0 +1,9 @@
+<launch>
+    <arg name="combined_id_" default="robot_pose_ekf/odom_combined"/>
+    <arg name="speed_id_" default="odom"/>
+
+    <node name="comb2speed" pkg="topic_demo" type="comb2speed" launch-prefix="xterm -e">
+        <param name="combined_id" value="$(arg combined_id_)"/>
+        <param name="speed_id" value="$(arg speed_id_)"/>
+    </node>
+</launch>

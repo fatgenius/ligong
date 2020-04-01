@@ -1,0 +1,21 @@
+<data>
+
+    <goal name="bbb">
+        <header>
+            <frame_id>/map</frame_id>
+        </header>
+        <pose>
+            <position>
+                <x>1.64326906204</x>
+                <y>-2.01315450668</y>
+                <z>0.0</z>
+            </position>
+            <orientation>
+                <x>0.0</x>
+                <y>0.0</y>
+                <w>0.356274054507</w>
+                <z>0.934381505642</z>
+            </orientation>
+        </pose>
+    </goal>
+</data>

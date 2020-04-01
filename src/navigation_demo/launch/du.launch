@@ -1,0 +1,69 @@
+<launch>
+    <arg name="odom_id" default="odom"/>
+
+    <!--小车模型-->
+    <include file="$(find model)/launch/model.launch"/>
+
+    <!--雷达模块-->
+    <include file="$(find ls01b_v2)/launch/ls01b_v2.launch">
+        <arg name="scan_topic_" value="scan"/>
+        <arg name="frame_id_" value="laser"/>
+        <arg name="serial_port_" value="/dev/ttyUSB3"/>
+    </include>
+    <include file="$(find ls01b_v2_2)/launch/ls01b_v2_2.launch">
+        <arg name="scan_topic_" value="scan2"/>
+        <arg name="frame_id_" value="laser2"/>
+        <arg name="serial_port_" value="/dev/ttyUSB4"/>
+    </include>
+
+    <!--轮子模块-->
+    <node pkg="wheel" type="wheel" name="" launch-prefix="xterm -e">
+        <param name="Serial" value="/dev/ttyUSB0"/>
+        <param name="Baud" value="230400.0"/>
+        <param name="TF_parent_id" value="$(arg odom_id)"/>
+        <param name="TF_child_id" value="base_footprint"/>
+        <remap from="cmd_vel_mux/output/cmd_vel" to="cmd_vel"/>
+    </node>
+
+    <!--realsense_265模块-->
+    <!--<node pkg="realsense2_beta" type="t265_node" name=""/>-->
+
+    <!--zed模块-->
+    <!--<include file="$(find zed_wrapper)/launch/zed_no_tf.launch"/>-->
+
+    <!--imu模块-->
+    <!--<node name="imu" pkg="imu" type="imu" launch-prefix="xterm -e">
+        <param name="imu_port" value="/dev/ttyUSB2"/>
+    </node>-->
+
+    <!--里程计数据融合-->
+ <!--    <include file="$(find navigation_demo)/launch/robot_pose_ekf.launch">
+        <arg name="output_frame_id" value="$(arg odom_id)"/>
+    </include> -->
+
+
+    <!--全局地图发布-->
+    <arg name="map_file" default="$(find mapping)/map/map.yaml"/>
+    <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)"/>
+
+    <!--amcl 局部定位 -->
+<!--     <include file="$(find navigation_demo)/launch/include/amcl.launch">
+        <arg name="initial_pose_x" value="0.0"/>
+        <arg name="initial_pose_y" value="0.0"/>
+        <arg name="initial_pose_a" value="0.0"/>
+        <arg name="odom_frame_id" value="$(arg odom_id)"/>
+    </include> -->
+
+    <!--DU`S localization-->
+    <include file="$(find navigation_demo)/launch/include/localization_run.launch"/>
+
+
+    <!-- Move base -->
+    <include file="$(find navigation_demo)/launch/include/move_base.launch.xml"/>
+
+    <!--rviz 配置-->
+    <node pkg="rviz" type="rviz" name="" output="screen" args="-d $(find navigation_demo)/rviz/navigation.rviz"/>
+
+    <node name="rp_goal" pkg="topic_demo" type="rp_goal" launch-prefix="xterm -e"/>
+
+</launch>

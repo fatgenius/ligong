@@ -1,0 +1,271 @@
+<?xml version="1.0"?>
+<robot name="amr" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:property name="PI" value="3.1415926535897931"/>
+
+  <xacro:property name="chassisHeight" value="0.81"/>
+  <xacro:property name="chassisLength" value="0.89"/>
+  <xacro:property name="chassisWidth" value="0.805"/>
+  <xacro:property name="chassisMass" value="30"/>
+
+  <xacro:property name="wheelWidth" value="0.06"/>
+  <xacro:property name="wheelRadius" value="0.065"/>
+  <xacro:property name="wheelPos" value="0.36"/>
+  <xacro:property name="wheelMass" value="2"/>
+
+  <xacro:property name="camera_x" value="${chassisLength/2}"/>
+  <xacro:property name="camera_y" value="0"/>
+  <xacro:property name="camera_z" value="0"/>
+
+  <xacro:property name="LaserHeight" value="0.04"/>
+  <xacro:property name="LaserRadius" value="0.038"/>
+  <xacro:property name="LaserMass" value="0.1"/>
+
+  <xacro:property name="Laser1_x" value="${chassisLength/2 - 0.092}"/>
+  <xacro:property name="Laser1_y" value="0"/>
+  <xacro:property name="Laser1_z" value="${-(chassisHeight/2 - 0.21- LaserHeight/2) + 0.3 + 0.125}"/>
+
+  <xacro:property name="Laser2_x" value="${-(chassisLength/2 - 0.055)}"/>
+  <xacro:property name="Laser2_y" value="0"/>
+  <xacro:property name="Laser2_z" value="${-(chassisHeight/2 - 0.21- LaserHeight/2) + 0.3 + 0.125}"/>
+
+  <xacro:property name="odom_x" value="0.0"/>
+  <xacro:property name="odom_y" value="0.0"/>
+  <xacro:property name="odom_z" value="${chassisHeight/2}"/>
+
+  <xacro:include filename="$(find model)/urdf/materials.xacro" />
+  <xacro:include filename="$(find model)/urdf/macros.xacro" />
+
+  <!--<xacro:property name="odom_name" value="odom"/>-->
+  <!--<xacro:property name="odom_name" value="odom_combined"/>-->
+
+  <!--<link name="${odom_name}"/>
+  <joint name="base_joint" type="fixed">
+    <parent link="${odom_name}"/>
+    <child link="base_footprint"/>
+    <origin xyz="${odom_x} ${odom_y} ${odom_z}" rpy="0 0 0" />
+    <axis xyz="0 1 0" rpy="0 0 0" />
+    <limit effort="100" velocity="100"/>
+    <joint_properties damping="0.0" friction="0.0"/>
+  </joint>-->
+
+  <link name="base_footprint"/>
+  <joint name="base_footprint_to_base" type="fixed">
+    <axis rpy="0 0 0" xyz="0 0 0"/>
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+  </joint>
+
+   <link name='base_link'>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="${chassisLength} ${chassisWidth} ${chassisHeight}"/>
+      </geometry>
+    </collision>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="${chassisLength} ${chassisWidth} ${chassisHeight}"/>
+      </geometry>
+      <material name="orange"/>
+    </visual>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="${chassisMass}"/>
+      <box_inertia m="${chassisMass}" x="${chassisLength}" y="${chassisWidth}" z="${chassisHeight}"/>
+    </inertial>
+  </link>
+
+
+  <link name="imu"/>
+  <joint name="base_to_imu" type="fixed">
+    <axis rpy="0 0 0" xyz="0 0 0"/>
+    <parent link="base_link"/>
+    <child link="imu"/>
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+  </joint>
+
+
+  <link name="left_wheel">
+    <collision>
+      <origin xyz="0 0 0" rpy="0 ${PI/2} ${PI/2}" />
+      <geometry>
+        <cylinder length="${wheelWidth}" radius="${wheelRadius}"/>
+      </geometry>
+    </collision>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 ${PI/2} ${PI/2}" />
+      <geometry>
+        <cylinder length="${wheelWidth}" radius="${wheelRadius}"/>
+      </geometry>
+      <material name="white"/>
+    </visual>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 ${PI/2} ${PI/2}" />
+      <mass value="${wheelMass}"/>
+      <cylinder_inertia m="${wheelMass}" r="${wheelRadius}" h="${wheelWidth}"/>
+    </inertial>
+  </link>
+
+  <joint name="left_wheel_hinge" type="continuous">
+    <parent link="base_link"/>
+    <child link="left_wheel"/>
+    <origin xyz="0 ${wheelPos} ${-(chassisHeight/2+wheelRadius)}" rpy="0 0 0" />
+    <axis xyz="0 1 0" rpy="0 0 0" />
+    <limit effort="100" velocity="100"/>
+    <joint_properties damping="0.0" friction="0.0"/>
+  </joint>
+
+
+  <link name="right_wheel">
+    <collision>
+      <origin xyz="0 0 0" rpy="0 ${PI/2} ${PI/2}" />
+      <geometry>
+        <cylinder length="${wheelWidth}" radius="${wheelRadius}"/>
+      </geometry>
+    </collision>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 ${PI/2} ${PI/2}" />
+      <geometry>
+        <cylinder length="${wheelWidth}" radius="${wheelRadius}"/>
+      </geometry>
+      <material name="white"/>
+    </visual>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 ${PI/2} ${PI/2}" />
+      <mass value="${wheelMass}"/>
+      <cylinder_inertia m="${wheelMass}" r="${wheelRadius}" h="${wheelWidth}"/>
+    </inertial>
+  </link>
+
+  <joint name="right_wheel_hinge" type="continuous">
+    <parent link="base_link"/>
+    <child link="right_wheel"/>
+    <origin xyz="0 ${-wheelPos} ${-(chassisHeight/2+wheelRadius)}" rpy="0 0 0" />
+    <axis xyz="0 1 0" rpy="0 0 0" />
+    <limit effort="100" velocity="100"/>
+    <joint_properties damping="0.0" friction="0.0"/>
+  </joint>
+  
+
+  <link name="laser">
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <cylinder length="${LaserHeight}" radius="${LaserRadius}"/>
+      </geometry>
+    </collision>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <cylinder length="${LaserHeight}" radius="${LaserRadius}"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+    <!--<inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="${LaserMass}"/>
+      <cylinder_inertia m="${LaserMass}" r="${LaserRadius}" h="${LaserHeight}"/>
+    </inertial>-->
+  </link>
+
+  <joint name="laser_hinge" type="continuous">
+    <parent link="base_link"/>
+    <child link="laser"/>
+    <origin xyz="${Laser1_x} ${Laser1_y} ${Laser1_z}" rpy="0 0 0" />
+    <axis xyz="0 0 1" rpy="0 0 0" />-->
+    <limit effort="0" velocity="0"/>
+    <joint_properties damping="0.0" friction="0.0"/>
+  </joint>
+
+
+  <link name="laser2">
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <cylinder length="${LaserHeight}" radius="${LaserRadius}"/>
+      </geometry>
+    </collision>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <cylinder length="${LaserHeight}" radius="${LaserRadius}"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+    <!--<inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="${LaserMass}"/>
+      <cylinder_inertia m="${LaserMass}" r="${LaserRadius}" h="${LaserHeight}"/>
+    </inertial>-->
+  </link>
+
+  <joint name="laser2_hinge" type="continuous">
+    <parent link="base_link"/>
+    <child link="laser2"/>
+    <origin xyz="${Laser2_x} ${Laser2_y} ${Laser2_z}" rpy="3.1415926 0 3.1415926" />
+    <axis xyz="0 1 0" rpy="0 0 0" />
+    <limit effort="100" velocity="100"/>
+    <joint_properties damping="0.0" friction="0.0"/>
+  </joint>
+
+
+   <!--Camera Center -->
+  <link name="zed_camera_center">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://zed_wrapper/urdf/models/ZED.stl" />
+      </geometry>
+      <material name="light_grey">
+        <color rgba="0 0 0 0.9"/>
+      </material>
+    </visual>
+  </link>
+
+  <joint name="zed_camera_center_hinge" type="continuous">
+    <parent link="base_link"/>
+    <child link="zed_camera_center"/>
+    <origin xyz="${camera_x} ${camera_y} ${camera_z}" rpy="0 0 0" />
+    <axis xyz="0 1 0" rpy="0 0 0" />
+    <limit effort="100" velocity="100"/>
+    <joint_properties damping="0.0" friction="0.0"/>
+  </joint>
+
+
+
+  <!--<link name="zed_imu_link" />
+  <joint name="imu_link_joint" type="fixed">
+    <parent link="zed_camera_center"/>
+      <child link="zed_imu_link"/>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+  </joint>-->
+
+
+    <!--<link name="zed_camera_center">
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <box size="${cameraLength} ${cameraWidth} ${cameraHeight}"/>
+      </geometry>
+    </collision>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <box size="${cameraLength} ${cameraWidth} ${cameraHeight}"/>
+      </geometry>
+      <material name="green"/>
+    </visual>
+    <inertial>
+      <origin xyz="0 0 ${(chassisHeight-wheelRadius)/2+cameraHeight/2+0.44}" rpy="0 0 0"/>
+      <mass value="${cameraMass}"/>
+      <box_inertia m="${cameraMass}" x="${cameraLength}" y="${cameraWidth}" z="${cameraHeight}"/>
+    </inertial>
+  </link>-->
+
+
+
+
+</robot>
