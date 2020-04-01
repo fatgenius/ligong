@@ -1,0 +1,8 @@
+prefix=/home/ai/catkin_ws/devel
+
+Name: nav_core
+Description: Description of nav_core
+Version: 1.14.4
+Cflags: -I/home/ai/catkin_ws/src/move_base/nav_core/include
+Libs: -L${prefix}/lib 
+Requires: std_msgs geometry_msgs tf costmap_2d

@@ -1,0 +1,8 @@
+prefix=/home/ai/catkin_ws/devel
+
+Name: realsense2_description_beta
+Description: Description of realsense2_description_beta
+Version: 2.2.9
+Cflags: 
+Libs: -L/home/ai/catkin_ws/devel/lib 
+Requires: 

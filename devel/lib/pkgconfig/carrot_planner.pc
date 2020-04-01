@@ -1,0 +1,8 @@
+prefix=/home/ai/catkin_ws/devel
+
+Name: carrot_planner
+Description: Description of carrot_planner
+Version: 1.14.4
+Cflags: -I/home/ai/catkin_ws/src/move_base/carrot_planner/include
+Libs: -L${prefix}/lib -lcarrot_planner
+Requires: roscpp pluginlib costmap_2d base_local_planner nav_core
